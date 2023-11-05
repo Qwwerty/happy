@@ -13,6 +13,10 @@ const config: Config = {
         sans: 'var(--font-nunito)',
       },
 
+      gridTemplateColumns: {
+        location: '27.5rem 1fr',
+      },
+
       maxWidth: {
         app: '70rem',
       },

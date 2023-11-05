@@ -47,7 +47,7 @@ export default function Home() {
           </p>
 
           <Link
-            href="/"
+            href="/location"
             className="bg-yellow group flex h-16 w-16 items-center justify-center rounded-[1.875rem] transition-colors hover:bg-blue-100 sm:h-20 sm:w-20"
           >
             <ArrowRight className="stroke- text-brown h-8 w-8 font-extrabold group-hover:text-blue-300 group-hover:transition-colors" />
