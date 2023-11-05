@@ -1,13 +1,11 @@
-'use client'
-
-import { useMobile } from '@/hooks/useMobile'
 import { ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { ButtonDarkMode } from '../components/button-dark-mode'
 
 export default function Home() {
   return (
-    <div className="flex h-screen w-full items-center justify-center bg-gradient-to-t from-happy-blue-500 to-happy-cyan-400 px-6 sm:px-20 lg:px-10">
+    <div className="flex h-screen w-full items-center justify-center bg-gradient-to-t from-blue-500 to-cyan-400 px-6 dark:from-zinc-900 dark:to-zinc-950 sm:px-20 lg:px-10">
       <div className="relative flex w-full max-w-app justify-between">
         <div>
           <Image
@@ -50,12 +48,14 @@ export default function Home() {
 
           <Link
             href="/"
-            className="group flex h-16 w-16 items-center justify-center rounded-[1.875rem] bg-happy-yellow transition-colors hover:bg-happy-blue-100 sm:h-20 sm:w-20"
+            className="bg-yellow group flex h-16 w-16 items-center justify-center rounded-[1.875rem] transition-colors hover:bg-blue-100 sm:h-20 sm:w-20"
           >
-            <ArrowRight className="stroke- h-8 w-8 font-extrabold text-happy-brown group-hover:text-happy-blue-300 group-hover:transition-colors" />
+            <ArrowRight className="stroke- text-brown h-8 w-8 font-extrabold group-hover:text-blue-300 group-hover:transition-colors" />
           </Link>
         </div>
       </div>
+
+      <ButtonDarkMode className="absolute  top-10 " />
     </div>
   )
 }
