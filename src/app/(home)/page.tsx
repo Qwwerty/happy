@@ -6,8 +6,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 export default function Home() {
-  const isMobile = useMobile()
-
   return (
     <div className="flex h-screen w-full items-center justify-center bg-gradient-to-t from-happy-blue-500 to-happy-cyan-400 px-6 sm:px-20 lg:px-10">
       <div className="relative flex w-full max-w-app justify-between">
