@@ -9,7 +9,7 @@ import { useTheme } from 'next-themes'
 export function ButtonDarkMode({ className }: ComponentProps<'button'>) {
   const { theme, setTheme } = useTheme()
 
-  const icon = theme === 'light' ? <Sun /> : <Moon />
+  const icon = theme === 'dark' ? <Sun /> : <Moon />
   const toggleTheme = () => setTheme(theme === 'light' ? 'dark' : 'light')
 
   return (

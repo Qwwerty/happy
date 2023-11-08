@@ -1,7 +1,7 @@
 import { ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ButtonDarkMode } from '../components/button-dark-mode'
+import { ButtonDarkMode } from '@/components/button-dark-mode'
 
 export default function Home() {
   return (
