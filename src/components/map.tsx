@@ -4,7 +4,7 @@ import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
-import CustomMarkerIcon from './markerMap'
+import CustomMarkerIcon from '../app/location/markerMap'
 
 export default function Map() {
   return (
