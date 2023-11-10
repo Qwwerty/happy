@@ -50,7 +50,7 @@ export default function Home() {
             href="/location"
             className="group flex h-16 w-16 items-center justify-center rounded-[1.875rem] bg-yellow transition-colors hover:bg-blue-100 sm:h-20 sm:w-20"
           >
-            <ArrowRight className="stroke- h-8 w-8 font-extrabold text-brown group-hover:text-blue-300 group-hover:transition-colors" />
+            <ArrowRight className="h-8 w-8 stroke-2 font-extrabold text-brown group-hover:text-blue-300 group-hover:transition-colors" />
           </Link>
         </div>
       </div>
