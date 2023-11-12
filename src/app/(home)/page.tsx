@@ -5,7 +5,7 @@ import { ButtonDarkMode } from '@/components/button-dark-mode'
 
 export default function Home() {
   return (
-    <div className="flex h-screen w-full items-center justify-center bg-gradient-to-t from-blue-500 to-cyan-400 px-6 dark:from-zinc-900 dark:to-zinc-950 sm:px-20 lg:px-10">
+    <div className="flex min-h-screen w-full items-center justify-center bg-gradient-to-t from-blue-500 to-cyan-400 px-6 py-10 dark:from-zinc-900 dark:to-zinc-950 sm:px-20 lg:px-14">
       <div className="relative flex w-full max-w-app justify-between">
         <div>
           <Image
@@ -55,7 +55,7 @@ export default function Home() {
         </div>
       </div>
 
-      <ButtonDarkMode className="absolute  top-10 " />
+      <ButtonDarkMode className="absolute top-10 " />
     </div>
   )
 }

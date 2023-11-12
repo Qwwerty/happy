@@ -5,8 +5,16 @@ import Link from 'next/link'
 import React from 'react'
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 import CustomMarkerIcon from '../app/location/markerMap'
+import { useTheme } from 'next-themes'
 
 export default function Map() {
+  const { theme } = useTheme()
+
+  const themeTileLayerUrl =
+    theme === 'light'
+      ? `https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.NEXT_PUBLIC_MAP_BOX_TOKEN}`
+      : `https://api.mapbox.com/styles/v1/mapbox/dark-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.NEXT_PUBLIC_MAP_BOX_TOKEN}`
+
   return (
     <MapContainer
       center={[-21.118306, -42.941503]}
@@ -17,9 +25,7 @@ export default function Map() {
       scrollWheelZoom
       doubleClickZoom
     >
-      <TileLayer
-        url={`https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.NEXT_PUBLIC_MAP_BOX_TOKEN}`}
-      />
+      <TileLayer url={themeTileLayerUrl} />
 
       <Marker icon={CustomMarkerIcon} position={[-21.118306, -42.941503]}>
         <Popup
