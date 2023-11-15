@@ -15,26 +15,39 @@ const input = tv({
   },
 })
 
-type InputProps = ComponentProps<'input'> &
+type TextAreaProps = ComponentProps<'textarea'> &
   VariantProps<typeof input> & {
     name: string
     label: string
+    maxLength?: number
   }
 
-export function Input({
+export function TextArea({
   variant,
   className,
   name,
   label = '',
+  maxLength,
   ...props
-}: InputProps) {
+}: TextAreaProps) {
   return (
     <div className="flex flex-col gap-2">
-      <label htmlFor={name} className="text-base font-semibold text-gray-600">
-        {label}
+      <label htmlFor={name} className="flex gap-8">
+        <span className="text-base font-semibold text-gray-600">{label}</span>
+
+        {maxLength && (
+          <span className="text-sm text-text-base">
+            Máximo de {maxLength} catacteres
+          </span>
+        )}
       </label>
 
-      <input {...props} name={name} className={input({ variant, className })} />
+      <textarea
+        {...props}
+        name={name}
+        maxLength={maxLength}
+        className={input({ variant, className })}
+      />
     </div>
   )
 }

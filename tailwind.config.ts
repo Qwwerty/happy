@@ -25,6 +25,13 @@ const config: Config = {
         title: '#4D6F80',
         'text-base': '#5C8599',
 
+        gray: {
+          50: '#F5F8FA',
+          100: '#EBF2F5',
+          300: '#D3E2E5',
+          600: '#8FA7B2',
+        },
+
         blue: {
           50: '#B3DAE2',
           100: '#96FEFF',
@@ -32,6 +39,7 @@ const config: Config = {
           400: '#15C3D6',
           500: '#29B6D1',
           600: '#12AFCB',
+          700: '#15B6D6',
           800: '#15C3D6',
         },
         green: {

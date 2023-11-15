@@ -24,6 +24,7 @@ export default function Map() {
       zoomControl
       scrollWheelZoom
       doubleClickZoom
+      style={{ width: '100%', height: '100%' }}
     >
       <TileLayer url={themeTileLayerUrl} />
 

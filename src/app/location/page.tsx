@@ -1,10 +1,10 @@
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
 import { Plus } from 'lucide-react'
-import Link from 'next/link'
 import { ButtonDarkMode } from '@/components/button-dark-mode'
+import { Link } from '@/components/link'
 
-const Map = dynamic(() => import('../../components/map'), {
+const Map = dynamic(() => import('../../components/Map'), {
   loading: () => <p>Loading...</p>,
   ssr: false,
 })

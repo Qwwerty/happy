@@ -4,7 +4,7 @@ import { Link } from './link'
 
 export function Sidebar() {
   return (
-    <div className="flex h-full flex-col items-center justify-between bg-blue-400 px-6 py-8">
+    <div className="fixed flex h-full flex-col items-center justify-between bg-blue-400 px-6 py-8">
       <Image src="/local.svg" width={48} height={56} alt="" />
 
       <Link
