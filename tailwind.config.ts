@@ -47,6 +47,7 @@ const config: Config = {
           100: '#A1E9C5',
           300: '#3CDC8C',
           500: '#37C77F',
+          600: '#39CC83',
           700: '#3EE08F',
         },
         cyan: {
