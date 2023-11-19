@@ -5,16 +5,38 @@ import { TextArea } from '@/components/textarea'
 import * as FileInput from '@/components/FileInput'
 import * as Switch from '@radix-ui/react-switch'
 import dynamic from 'next/dynamic'
+import { useForm } from 'react-hook-form'
 
 const Map = dynamic(() => import('@/components/Map'), {
   loading: () => <p>Loading...</p>,
   ssr: false,
 })
 
+interface IOrphanage {
+  positionX: number
+  positionY: number
+  name: string
+  about: string
+  phone: string
+  images: Array<unknown>
+  instructions: string
+  visitingHours: string
+  isOpenWeekend: boolean
+}
+
 export default function Create() {
+  const { register, handleSubmit } = useForm<IOrphanage>()
+
+  function handleCreateOrphanage() {
+    console.log('test')
+  }
+
   return (
     <div className="flex justify-center bg-gray-100 pb-20 pt-10">
-      <div className="w-full max-w-[708px]">
+      <form
+        onSubmit={handleSubmit(handleCreateOrphanage)}
+        className="w-full max-w-[708px]"
+      >
         <h6 className="text-center text-lg font-semibold text-gray-600">
           Adicione um orfanato
         </h6>
@@ -91,11 +113,14 @@ export default function Create() {
             </Switch.Root>
           </div>
 
-          <button className="mt-10 h-16 w-full rounded-[1.25rem] bg-green-500 text-lg font-bold text-white transition-colors hover:bg-green-700">
+          <button
+            type="submit"
+            className="mt-10 h-16 w-full rounded-[1.25rem] bg-green-500 text-lg font-bold text-white transition-colors hover:bg-green-700"
+          >
             Confirmar
           </button>
         </div>
-      </div>
+      </form>
     </div>
   )
 }
