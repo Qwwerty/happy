@@ -1,17 +1,42 @@
+'use client'
+
 import { Input } from '@/components/input'
 import { TextArea } from '@/components/textarea'
 import * as FileInput from '@/components/FileInput'
+import * as Switch from '@radix-ui/react-switch'
 import dynamic from 'next/dynamic'
+import { useForm } from 'react-hook-form'
 
 const Map = dynamic(() => import('@/components/Map'), {
   loading: () => <p>Loading...</p>,
   ssr: false,
 })
 
+interface IOrphanage {
+  positionX: number
+  positionY: number
+  name: string
+  about: string
+  phone: string
+  images: Array<unknown>
+  instructions: string
+  visitingHours: string
+  isOpenWeekend: boolean
+}
+
 export default function Create() {
+  const { register, handleSubmit } = useForm<IOrphanage>()
+
+  function handleCreateOrphanage() {
+    console.log('test')
+  }
+
   return (
     <div className="flex justify-center bg-gray-100 pb-20 pt-10">
-      <div className="w-full max-w-[708px]">
+      <form
+        onSubmit={handleSubmit(handleCreateOrphanage)}
+        className="w-full max-w-[708px]"
+      >
         <h6 className="text-center text-lg font-semibold text-gray-600">
           Adicione um orfanato
         </h6>
@@ -59,7 +84,7 @@ export default function Create() {
             </FileInput.Root>
           </div>
 
-          <h6>Visitação</h6>
+          <h6 className="text-3xl font-bold text-title">Visitação</h6>
 
           <div className="mb-10 mt-6 border-[0.0625rem] border-gray-300" />
 
@@ -68,12 +93,34 @@ export default function Create() {
               label="Instruções"
               name="instructions"
               className="h-32 resize-none"
+              defaultValue="Venha como se sentir a vontade e traga muito amor e paciência para dar."
             />
 
-            <Input label="Horário das visitas" name="visitingHours" />
+            <Input
+              label="Horário das visitas"
+              name="visitingHours"
+              defaultValue="Das 8h até 18h"
+            />
           </div>
+
+          <div className="mt-8 flex items-center justify-between">
+            <span className="text-base font-semibold text-gray-600">
+              Atende fim de semana?
+            </span>
+
+            <Switch.Root className="relative h-6 w-16 rounded-full border border-gray-300 bg-gray-50 shadow-sm outline-none data-[state=checked]:bg-green-600">
+              <Switch.Thumb className="block h-4 w-8 translate-x-0.5 rounded-full bg-gray-600 transition-transform duration-100 will-change-transform data-[state=checked]:translate-x-[28px] data-[state=checked]:bg-white" />
+            </Switch.Root>
+          </div>
+
+          <button
+            type="submit"
+            className="mt-10 h-16 w-full rounded-[1.25rem] bg-green-500 text-lg font-bold text-white transition-colors hover:bg-green-700"
+          >
+            Confirmar
+          </button>
         </div>
-      </div>
+      </form>
     </div>
   )
 }
