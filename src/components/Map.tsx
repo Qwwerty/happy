@@ -6,14 +6,15 @@ import React from 'react'
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 import CustomMarkerIcon from '../app/location/markerMap'
 import { useTheme } from 'next-themes'
+import { env } from '../../env'
 
 export default function Map() {
   const { theme } = useTheme()
 
   const themeTileLayerUrl =
     theme === 'light'
-      ? `https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.NEXT_PUBLIC_MAP_BOX_TOKEN}`
-      : `https://api.mapbox.com/styles/v1/mapbox/dark-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.NEXT_PUBLIC_MAP_BOX_TOKEN}`
+      ? `https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${env.NEXT_PUBLIC_MAP_BOX_TOKEN}`
+      : `https://api.mapbox.com/styles/v1/mapbox/dark-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${env.NEXT_PUBLIC_MAP_BOX_TOKEN}`
 
   return (
     <MapContainer
