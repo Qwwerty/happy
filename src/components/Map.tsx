@@ -1,12 +1,11 @@
 'use client'
 
 import { ArrowRight } from 'lucide-react'
-import Link from 'next/link'
-import React from 'react'
-import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
-import CustomMarkerIcon from '../app/location/markerMap'
 import { useTheme } from 'next-themes'
+import Link from 'next/link'
+import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 import { env } from '../../env'
+import CustomMarkerIcon from '../app/location/markerMap'
 
 export default function Map() {
   const { theme } = useTheme()

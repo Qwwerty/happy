@@ -1,18 +1,15 @@
 import { z } from 'zod'
 
-const envSchema = z.object({
-  NEXT_PUBLIC_MAP_BOX_TOKEN: z.string(),
-})
+const envSchema = z.string()
 
-const parsedEnv = envSchema.safeParse(process.env)
+const _env = envSchema.safeParse(process.env.NEXT_PUBLIC_MAP_BOX_TOKEN)
 
-if (!parsedEnv.success) {
-  console.error(
-    'Invalid environment variables',
-    parsedEnv.error.flatten().fieldErrors,
-  )
+if (_env.success === false) {
+  console.log('❌ Invalid environment variables', _env.error.format())
 
-  throw new Error('Invalid environment variables')
+  throw new Error('Invalid environment variables.')
 }
 
-export const env = parsedEnv.data
+export const env = {
+  NEXT_PUBLIC_MAP_BOX_TOKEN: _env.data,
+}
