@@ -2,13 +2,14 @@ import type { Metadata } from 'next'
 import { Nunito } from 'next/font/google'
 import { Providers } from './providers'
 
-import './globals.css'
 import 'leaflet/dist/leaflet.css'
+import './globals.css'
 
 const nunito = Nunito({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-nunito',
+  adjustFontFallback: false,
 })
 
 export const metadata: Metadata = {
