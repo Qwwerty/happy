@@ -1,8 +1,8 @@
 'use client'
 
+import * as FileInput from '@/components/FileInput'
 import { Input } from '@/components/input'
 import { TextArea } from '@/components/textarea'
-import * as FileInput from '@/components/FileInput'
 import * as Switch from '@radix-ui/react-switch'
 import dynamic from 'next/dynamic'
 import { useForm } from 'react-hook-form'

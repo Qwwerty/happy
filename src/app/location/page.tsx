@@ -1,15 +1,50 @@
-import Image from 'next/image'
-import dynamic from 'next/dynamic'
-import { Plus } from 'lucide-react'
 import { ButtonDarkMode } from '@/components/button-dark-mode'
 import { Link } from '@/components/link'
+import { api } from '@/data/api'
+import { Plus } from 'lucide-react'
+import dynamic from 'next/dynamic'
+import Image from 'next/image'
 
 const Map = dynamic(() => import('../../components/Map'), {
   loading: () => <p>Loading...</p>,
   ssr: false,
 })
 
-export default function Location() {
+interface IPhoto {
+  name: string
+  url: string
+}
+
+export interface IOrphanage {
+  id: string
+  name: string
+  description: string
+  phone: string
+  latitude: number
+  longitude: number
+  visiting_instructions: string
+  visiting_hours: string
+  are_open_on_the_weekend: boolean
+  photos: IPhoto[]
+}
+
+async function fetchOrphanages(): Promise<IOrphanage[]> {
+  try {
+    const response = await api('/orphanages', {
+      cache: 'no-cache',
+    })
+
+    const { orphanages } = await response.json()
+
+    return orphanages
+  } catch (error) {
+    return []
+  }
+}
+
+export default async function Location() {
+  const orphanages = await fetchOrphanages()
+
   return (
     <div className="relative grid min-h-screen grid-cols-location">
       <div className="hidden h-full flex-col justify-between bg-gradient-to-t from-blue-500 to-cyan-400 py-20 pl-28 pr-20 pt-20 dark:from-zinc-900 dark:to-zinc-950 lg:flex">
@@ -30,7 +65,7 @@ export default function Location() {
         </p>
       </div>
 
-      <Map />
+      <Map orphanages={orphanages ?? []} />
 
       <Link
         href="/orphanage/create"

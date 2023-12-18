@@ -1,5 +1,6 @@
 'use client'
 
+import { IOrphanage } from '@/app/location/page'
 import { ArrowRight } from 'lucide-react'
 import { useTheme } from 'next-themes'
 import Link from 'next/link'
@@ -7,7 +8,11 @@ import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 import { env } from '../../env'
 import CustomMarkerIcon from '../app/location/markerMap'
 
-export default function Map() {
+interface MapProps {
+  orphanages: IOrphanage[]
+}
+
+export default function Map({ orphanages }: MapProps) {
   const { theme } = useTheme()
 
   const themeTileLayerUrl =
@@ -28,27 +33,33 @@ export default function Map() {
     >
       <TileLayer url={themeTileLayerUrl} />
 
-      <Marker icon={CustomMarkerIcon} position={[-21.118306, -42.941503]}>
-        <Popup
-          closeButton={false}
-          minWidth={240}
-          maxWidth={240}
-          className="map-popup"
+      {orphanages.map((orphanage) => (
+        <Marker
+          key={orphanage.id}
+          icon={CustomMarkerIcon}
+          position={[orphanage.latitude, orphanage.longitude]}
         >
-          <div className="flex h-6  w-full items-center justify-between rounded-3xl bg-white/80">
-            <span className="text-lg font-bold text-blue-800">
-              Orf. Esperança
-            </span>
+          <Popup
+            closeButton={false}
+            minWidth={240}
+            maxWidth={240}
+            className="map-popup"
+          >
+            <div className="flex h-6  w-full items-center justify-between rounded-3xl bg-white/80">
+              <span className="truncate text-lg font-bold text-blue-800">
+                {orphanage.name}
+              </span>
 
-            <Link
-              href="/"
-              className=" flex h-10 w-10 items-center justify-center rounded-xl bg-blue-400 shadow-lg transition-colors hover:bg-blue-300"
-            >
-              <ArrowRight className="h-5 w-5 stroke-2 text-white" />
-            </Link>
-          </div>
-        </Popup>
-      </Marker>
+              <Link
+                href={`/orphanage/${orphanage.id}`}
+                className=" flex h-10 w-10 items-center justify-center rounded-xl bg-blue-400 shadow-lg transition-colors hover:bg-blue-300"
+              >
+                <ArrowRight className="h-5 w-5 stroke-2 text-white" />
+              </Link>
+            </div>
+          </Popup>
+        </Marker>
+      ))}
     </MapContainer>
   )
 }
