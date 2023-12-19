@@ -23,7 +23,7 @@ export default function RootLayout({
 }) {
   return (
     <html className={nunito.className} lang="pt-BR">
-      <body className="antialiased">
+      <body className="antialiased scrollbar-thin scrollbar-track-gray-100 scrollbar-thumb-gray-900">
         <Providers>{children}</Providers>
       </body>
     </html>

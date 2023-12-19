@@ -4,6 +4,7 @@ import { api } from '@/data/api'
 import * as Map from '@/components/Map'
 import { PreviewImage } from '@/components/PreviewImage'
 import { Clock, MessageCircle } from 'lucide-react'
+import { ButtonDarkMode } from '@/components/button-dark-mode'
 
 interface OrphanagesDetailProps {
   params: {
@@ -125,6 +126,8 @@ export default async function OrphanageDetail({
           </Link>
         </div>
       </div>
+
+      <ButtonDarkMode className="absolute right-5 top-5 z-[1000] bg-zinc-900 hover:bg-zinc-900 lg:right-10 lg:top-10" />
     </div>
   )
 }
