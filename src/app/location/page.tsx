@@ -1,14 +1,10 @@
+import Image from 'next/image'
+import { api } from '@/data/api'
+
+import * as Map from '@/components/Map'
 import { ButtonDarkMode } from '@/components/button-dark-mode'
 import { Link } from '@/components/link'
-import { api } from '@/data/api'
 import { Plus } from 'lucide-react'
-import dynamic from 'next/dynamic'
-import Image from 'next/image'
-
-const Map = dynamic(() => import('../../components/Map'), {
-  loading: () => <p>Loading...</p>,
-  ssr: false,
-})
 
 interface IPhoto {
   name: string
@@ -65,7 +61,9 @@ export default async function Location() {
         </p>
       </div>
 
-      <Map orphanages={orphanages ?? []} />
+      <Map.Root>
+        <Map.Control orphanages={orphanages} />
+      </Map.Root>
 
       <Link
         href="/orphanage/create"

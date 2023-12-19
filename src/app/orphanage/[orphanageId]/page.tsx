@@ -1,7 +1,7 @@
-import { PreviewImage } from '@/components/PreviewImage'
 import { api } from '@/data/api'
-import { Orphanage } from '@/types/orphanage'
 import * as Map from '@/components/Map'
+import { PreviewImage } from '@/components/PreviewImage'
+import type { Orphanage } from '@/types/orphanage'
 
 interface OrphanagesDetailProps {
   params: {

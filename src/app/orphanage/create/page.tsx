@@ -1,16 +1,11 @@
 'use client'
 
+import { useForm } from 'react-hook-form'
+import * as Switch from '@radix-ui/react-switch'
 import * as FileInput from '@/components/FileInput'
+import * as Map from '@/components/Map'
 import { Input } from '@/components/input'
 import { TextArea } from '@/components/textarea'
-import * as Switch from '@radix-ui/react-switch'
-import dynamic from 'next/dynamic'
-import { useForm } from 'react-hook-form'
-
-const Map = dynamic(() => import('@/components/Map'), {
-  loading: () => <p>Loading...</p>,
-  ssr: false,
-})
 
 interface IOrphanage {
   positionX: number
@@ -47,7 +42,9 @@ export default function Create() {
           <div className="mb-10 mt-6 border-[0.0625rem] border-gray-300" />
 
           <div className="relative h-72 overflow-hidden rounded-[1.25rem] border border-gray-100">
-            {/* <Map orphanages={[]} /> */}
+            <Map.Root>
+              <Map.Preview latitude={-21.1248353} longitude={-42.9506151} />
+            </Map.Root>
 
             <div className="absolute bottom-0 left-0 right-0 z-[1000] flex h-12 items-center justify-center bg-gray-50">
               <span className="text-sm font-bold text-blue-600">
