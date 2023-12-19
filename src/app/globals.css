@@ -5,3 +5,8 @@
 .leaflet-popup-content {
   margin: 13px 10px 13px 20px !important;
 }
+
+.leaflet-bottom.leaflet-right {
+  display: none;
+}
+

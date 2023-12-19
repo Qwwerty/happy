@@ -19,7 +19,7 @@ export function Preview({ latitude, longitude }: PreviewProps) {
       : `https://api.mapbox.com/styles/v1/mapbox/dark-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${env.NEXT_PUBLIC_MAP_BOX_TOKEN}`
 
   return (
-    <div className="h-56 w-full overflow-hidden rounded-[1.25rem]">
+    <div className="h-56 w-full">
       <MapContainer
         center={[latitude, longitude]}
         zoom={15}

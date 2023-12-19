@@ -2,6 +2,7 @@ import { api } from '@/data/api'
 import * as Map from '@/components/Map'
 import { PreviewImage } from '@/components/PreviewImage'
 import type { Orphanage } from '@/types/orphanage'
+import Link from 'next/link'
 
 interface OrphanagesDetailProps {
   params: {
@@ -25,6 +26,8 @@ export default async function OrphanageDetail({
     return null
   }
 
+  const urlNavigateToGoogleMap = `https://www.google.com/maps/@${orphanage.latitude},${orphanage.longitude},15z?entry=ttu`
+
   return (
     <div className="flex flex-col items-center bg-gray-100 pt-10">
       <span className="text-center text-lg font-semibold text-gray-600">
@@ -43,11 +46,23 @@ export default async function OrphanageDetail({
           </span>
         </div>
 
-        <Map.Root className="mt-16 overflow-hidden rounded-[1.25rem] px-20">
+        <Map.Root className="mx-auto mt-16 w-full max-w-[34rem] overflow-hidden rounded-[1.25rem]">
           <Map.Preview
             latitude={orphanage.latitude}
             longitude={orphanage.longitude}
           />
+
+          <Map.Footer className="w-full">
+            <Link
+              href={urlNavigateToGoogleMap}
+              target="_blank"
+              className="flex h-12 w-full items-center justify-center bg-blue-400 transition-colors hover:bg-blue-600"
+            >
+              <span className="text-lg font-bold text-white">
+                Ver rotas no Google Maps
+              </span>
+            </Link>
+          </Map.Footer>
         </Map.Root>
       </div>
     </div>
