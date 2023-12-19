@@ -1,6 +1,7 @@
 import { PreviewImage } from '@/components/PreviewImage'
 import { api } from '@/data/api'
 import { Orphanage } from '@/types/orphanage'
+import * as Map from '@/components/Map'
 
 interface OrphanagesDetailProps {
   params: {
@@ -41,6 +42,13 @@ export default async function OrphanageDetail({
             {orphanage.description}
           </span>
         </div>
+
+        <Map.Root className="mt-16 overflow-hidden rounded-[1.25rem] px-20">
+          <Map.Preview
+            latitude={orphanage.latitude}
+            longitude={orphanage.longitude}
+          />
+        </Map.Root>
       </div>
     </div>
   )

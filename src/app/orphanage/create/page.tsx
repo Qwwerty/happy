@@ -47,7 +47,7 @@ export default function Create() {
           <div className="mb-10 mt-6 border-[0.0625rem] border-gray-300" />
 
           <div className="relative h-72 overflow-hidden rounded-[1.25rem] border border-gray-100">
-            <Map />
+            {/* <Map orphanages={[]} /> */}
 
             <div className="absolute bottom-0 left-0 right-0 z-[1000] flex h-12 items-center justify-center bg-gray-50">
               <span className="text-sm font-bold text-blue-600">
