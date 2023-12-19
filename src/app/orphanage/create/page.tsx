@@ -41,17 +41,14 @@ export default function Create() {
 
           <div className="mb-10 mt-6 border-[0.0625rem] border-gray-300" />
 
-          <div className="relative h-72 overflow-hidden rounded-[1.25rem] border border-gray-100">
-            <Map.Root>
-              <Map.Preview latitude={-21.1248353} longitude={-42.9506151} />
-            </Map.Root>
-
-            <div className="absolute bottom-0 left-0 right-0 z-[1000] flex h-12 items-center justify-center bg-gray-50">
-              <span className="text-sm font-bold text-blue-600">
-                Clique no mapa para adicionar a localização
+          <Map.Root className="overflow-hidden rounded-[1.25rem]">
+            <Map.Preview latitude={-21.1248353} longitude={-42.9506151} />
+            <Map.Footer className="flex h-12 w-full items-center justify-center  bg-blue-400">
+              <span className=" text-lg font-bold text-white">
+                Ver rotas no Google Maps
               </span>
-            </div>
-          </div>
+            </Map.Footer>
+          </Map.Root>
 
           <div className="mb-20 mt-10 space-y-6">
             <Input name="name" label="Nome" defaultValue="Orf. E sperança" />
