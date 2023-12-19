@@ -27,6 +27,8 @@ export function Preview({ latitude, longitude }: PreviewProps) {
         dragging={false}
         doubleClickZoom={false}
         zoomControl={false}
+        minZoom={15}
+        maxZoom={15}
       >
         <TileLayer url={themeTileLayerUrl} />
         <Marker
