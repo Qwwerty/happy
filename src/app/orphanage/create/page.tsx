@@ -1,7 +1,6 @@
 'use client'
 
 import { Controller, FormProvider, useForm } from 'react-hook-form'
-import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as Switch from '@radix-ui/react-switch'
 import * as FileInput from '@/components/FileInput'
@@ -11,45 +10,8 @@ import { Toast } from '@/utils/Toast'
 import { api } from '@/services/api'
 import { Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { createOrphanageFormSchema, CreateOrphanageFormData } from './types.ts'
 import { ButtonDarkMode } from '@/components/button-dark-mode'
-
-const MAX_FILE_SIZE = 5 * 1024 * 1024
-const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png']
-
-const createOrphanageFormSchema = z.object({
-  name: z.string().min(3, 'Mínimo 3 caracteres.'),
-  description: z.string().min(20, 'Mínimo 20 caracteres.'),
-  phone: z.string().min(16, 'Telefone inválido.'),
-  latitude: z.coerce.number().refine((value) => {
-    return Math.abs(value) <= 90
-  }, 'Localização obrigatória.'),
-  longitude: z.coerce.number().refine((value) => {
-    return Math.abs(value) <= 180
-  }),
-  visitingInstructions: z.string().min(10, 'Mínimo 10 caracteres.'),
-  areOpenOnTheWeekend: z.boolean(),
-  visitingHours: z.string().min(1, 'Campo obrigatório.'),
-  photos: z
-    .instanceof(FileList, { message: 'Mínmo uma imagem.' })
-    .refine((files) => files.length >= 1, 'Mínimo uma imagem.')
-    .refine((files) => {
-      let hasAllowedImage = true
-
-      for (let i = 0; i < files.length; i++) {
-        if (
-          files.item(i)!.size > MAX_FILE_SIZE ||
-          !ACCEPTED_IMAGE_TYPES.includes(files.item(i)!.type)
-        ) {
-          hasAllowedImage = false
-          break
-        }
-      }
-
-      return hasAllowedImage
-    }, 'Tamanho máximo de 5MB'),
-})
-
-type CreateOrphanageFormData = z.infer<typeof createOrphanageFormSchema>
 
 export default function Create() {
   const router = useRouter()
@@ -64,7 +26,7 @@ export default function Create() {
       visitingHours: '',
       visitingInstructions: '',
       areOpenOnTheWeekend: false,
-      photos: [] as any,
+      photos: [],
     },
     resolver: zodResolver(createOrphanageFormSchema),
   })
