@@ -45,10 +45,10 @@ export default async function OrphanageDetail({
         <PreviewImage orphanageImage={orphanage} />
 
         <div className="mt-16 px-20">
-          <h2 className="truncate text-5xl font-bold text-title">
+          <h2 className="break-all text-5xl font-bold text-title">
             {orphanage.name}
           </h2>
-          <span className="mt-8 block text-lg font-semibold text-text-base">
+          <span className="mt-8 block break-all text-lg font-semibold text-text-base">
             {orphanage.description}
           </span>
 
@@ -78,13 +78,13 @@ export default async function OrphanageDetail({
               Instruções para visita
             </h2>
 
-            <span className="text-xl font-semibold text-text-base">
+            <span className="break-all text-xl font-semibold text-text-base">
               {orphanage.visiting_instructions}
             </span>
           </div>
 
           <div className="mt-6 grid grid-cols-2 gap-5">
-            <div className="flex h-44 flex-col gap-4 rounded-[1.25rem] border border-gray-100 bg-gray-200 px-6 py-8">
+            <div className="flex h-44 flex-col gap-4 rounded-[1.25rem] border border-gray-400 bg-gray-200 px-6 py-8">
               <Clock className="h-10 w-10 text-blue-700" />
 
               <div className="flex flex-col">
@@ -115,7 +115,7 @@ export default async function OrphanageDetail({
           <Link
             href={urSendMessageToWhatsapp}
             target="_blank"
-            className="mt-16 flex h-16 w-full items-center justify-center gap-4 rounded-[1.25rem] bg-green-300"
+            className="mt-16 flex h-16 w-full items-center justify-center gap-4 rounded-[1.25rem] bg-green-300 transition-colors hover:bg-green-500"
           >
             <MessageCircle className="h-7 w-7 text-white" />
             <span className="text-xl font-bold text-white">
