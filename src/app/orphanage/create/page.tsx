@@ -1,120 +1,258 @@
 'use client'
 
-import { useForm } from 'react-hook-form'
+import { Controller, FormProvider, useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
 import * as Switch from '@radix-ui/react-switch'
 import * as FileInput from '@/components/FileInput'
 import * as Map from '@/components/Map'
-import { Input } from '@/components/input'
-import { TextArea } from '@/components/textarea'
+import { Form } from '@/components/Form'
+import { Toast } from '@/utils/Toast'
+import { api } from '@/services/api'
+import { Loader2 } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { ButtonDarkMode } from '@/components/button-dark-mode'
 
-interface IOrphanage {
-  positionX: number
-  positionY: number
-  name: string
-  about: string
-  phone: string
-  images: Array<unknown>
-  instructions: string
-  visitingHours: string
-  isOpenWeekend: boolean
-}
+const MAX_FILE_SIZE = 5 * 1024 * 1024
+const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png']
+
+const createOrphanageFormSchema = z.object({
+  name: z.string().min(3, 'Mínimo 3 caracteres.'),
+  description: z.string().min(20, 'Mínimo 20 caracteres.'),
+  phone: z.string().min(16, 'Telefone inválido.'),
+  latitude: z.coerce.number().refine((value) => {
+    return Math.abs(value) <= 90
+  }, 'Localização obrigatória.'),
+  longitude: z.coerce.number().refine((value) => {
+    return Math.abs(value) <= 180
+  }),
+  visitingInstructions: z.string().min(10, 'Mínimo 10 caracteres.'),
+  areOpenOnTheWeekend: z.boolean(),
+  visitingHours: z.string().min(1, 'Campo obrigatório.'),
+  photos: z
+    .instanceof(FileList, { message: 'Mínmo uma imagem.' })
+    .refine((files) => files.length >= 1, 'Mínimo uma imagem.')
+    .refine((files) => {
+      let hasAllowedImage = true
+
+      for (let i = 0; i < files.length; i++) {
+        if (
+          files.item(i)!.size > MAX_FILE_SIZE ||
+          !ACCEPTED_IMAGE_TYPES.includes(files.item(i)!.type)
+        ) {
+          hasAllowedImage = false
+          break
+        }
+      }
+
+      return hasAllowedImage
+    }, 'Tamanho máximo de 5MB'),
+})
+
+type CreateOrphanageFormData = z.infer<typeof createOrphanageFormSchema>
 
 export default function Create() {
-  const { register, handleSubmit } = useForm<IOrphanage>()
+  const router = useRouter()
 
-  function handleCreateOrphanage() {
-    console.log('test')
+  const createOrphanageForm = useForm<CreateOrphanageFormData>({
+    defaultValues: {
+      name: '',
+      description: '',
+      phone: '',
+      latitude: 91, // force error with values wrongs
+      longitude: 181, // force error with values wrongs
+      visitingHours: '',
+      visitingInstructions: '',
+      areOpenOnTheWeekend: false,
+      photos: [] as any,
+    },
+    resolver: zodResolver(createOrphanageFormSchema),
+  })
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { isSubmitting },
+  } = createOrphanageForm
+
+  async function handleCreateOrphanage(data: CreateOrphanageFormData) {
+    const {
+      name,
+      description,
+      phone,
+      latitude,
+      longitude,
+      photos,
+      visitingHours,
+      visitingInstructions,
+      areOpenOnTheWeekend,
+    } = data
+    const formData = new FormData()
+
+    const filesListToArrayOfPhotos = Array.from(photos as ArrayLike<File>)
+
+    formData.append('name', name)
+    formData.append('description', description)
+    formData.append('phone', phone)
+    formData.append('latitude', String(latitude))
+    formData.append('longitude', String(longitude))
+    formData.append('areOpenOnTheWeekend', String(areOpenOnTheWeekend))
+    formData.append('visitingInstructions', visitingInstructions)
+    formData.append('visitingHours', visitingHours)
+
+    filesListToArrayOfPhotos.forEach((photo) => {
+      formData.append('images', photo)
+    })
+
+    try {
+      await api.post('/orphanages', formData)
+
+      Toast.success('Cadastro realizado com sucesso!')
+      router.push('/location')
+    } catch (error) {
+      Toast.error('Cadastro não realizado!')
+    }
   }
 
   return (
     <div className="flex justify-center bg-gray-100 pb-20 pt-10">
-      <form
-        onSubmit={handleSubmit(handleCreateOrphanage)}
-        className="w-full max-w-[708px]"
-      >
-        <h6 className="text-center text-lg font-semibold text-gray-600">
-          Adicione um orfanato
-        </h6>
+      <FormProvider {...createOrphanageForm}>
+        <form
+          onSubmit={handleSubmit(handleCreateOrphanage)}
+          className="w-full max-w-[708px]"
+        >
+          <h6 className="text-center text-lg font-semibold text-gray-600">
+            Adicione um orfanato
+          </h6>
 
-        <div className="mt-10 rounded-[1.25rem] border border-gray-300 bg-white px-20 pb-20 pt-10 shadow-lg">
-          <span className="text-3xl font-bold text-title">Dados</span>
+          <div className="mt-10 rounded-[1.25rem] border border-gray-300 bg-white px-20 pb-20 pt-10 shadow-lg">
+            <span className="text-3xl font-bold text-title">Dados</span>
 
-          <div className="mb-10 mt-6 border-[0.0625rem] border-gray-300" />
+            <div className="mb-10 mt-6 border-[0.0625rem] border-gray-300" />
 
-          <Map.Root className="overflow-hidden rounded-[1.25rem]">
-            <Map.Preview latitude={-21.1248353} longitude={-42.9506151} />
-            <Map.Footer className="flex h-12 w-full items-center justify-center  bg-blue-400">
-              <span className=" text-lg font-bold text-white">
-                Ver rotas no Google Maps
+            <Map.Root className="overflow-hidden rounded-[1.25rem]">
+              <Map.Choose />
+              <Map.Footer className="flex h-12 w-full items-center justify-center  bg-blue-400">
+                <span className=" text-lg font-bold text-white">
+                  Clique no mapa para adicionar a localização
+                </span>
+              </Map.Footer>
+              <Form.ErrorMessage field="latitude" className="absolute" />
+            </Map.Root>
+
+            <div className="mb-20 mt-10 space-y-6">
+              <Form.Field>
+                <Form.Label htmlFor="name">Nome</Form.Label>
+                <Form.Input type="text" name="name" />
+                <Form.ErrorMessage field="name" />
+              </Form.Field>
+
+              <Form.Field>
+                <Form.Label htmlFor="description">Descrição</Form.Label>
+                <Form.TextArea
+                  name="description"
+                  maxLength={300}
+                  className="h-52 resize-none"
+                />
+                <Form.ErrorMessage field="description" />
+              </Form.Field>
+
+              <Controller
+                name="phone"
+                control={control}
+                render={({ field }) => (
+                  <Form.Field>
+                    <Form.Label>Número de Whatsapp</Form.Label>
+                    <Form.Phone
+                      name="phone"
+                      value={field.value}
+                      onChange={(e) => field.onChange(e.target.value)}
+                    />
+
+                    <Form.ErrorMessage field="phone" />
+                  </Form.Field>
+                )}
+              />
+
+              <FileInput.Root>
+                <FileInput.Title className="mb-4 block text-base font-semibold text-gray-600">
+                  Fotos
+                </FileInput.Title>
+                <FileInput.FileList>
+                  <FileInput.Trigger />
+                </FileInput.FileList>
+                <FileInput.Control />
+
+                <Form.ErrorMessage field="photos" />
+              </FileInput.Root>
+            </div>
+
+            <h6 className="text-3xl font-bold text-title">Visitação</h6>
+
+            <div className="mb-10 mt-6 border-[0.0625rem] border-gray-300" />
+
+            <div className="flex flex-col space-y-6">
+              <Form.Field>
+                <Form.Label htmlFor="visiting_instructions">
+                  Instruções
+                </Form.Label>
+
+                <Form.TextArea
+                  name="visitingInstructions"
+                  className="h-52 resize-none"
+                />
+                <Form.ErrorMessage field="visitingInstructions" />
+              </Form.Field>
+
+              <Form.Field>
+                <Form.Label htmlFor="visitingHours">
+                  Horário das visitas
+                </Form.Label>
+
+                <Form.Input name="visitingHours" />
+                <Form.ErrorMessage field="visitingHours" />
+              </Form.Field>
+            </div>
+
+            <div className="mt-8 flex items-center justify-between">
+              <span className="text-base font-semibold text-gray-600">
+                Atende fim de semana?
               </span>
-            </Map.Footer>
-          </Map.Root>
 
-          <div className="mb-20 mt-10 space-y-6">
-            <Input name="name" label="Nome" defaultValue="Orf. E sperança" />
+              <Controller
+                name="areOpenOnTheWeekend"
+                control={control}
+                render={({ field }) => (
+                  <Switch.Root
+                    onCheckedChange={(checked) => field.onChange(checked)}
+                    className="relative h-6 w-16 rounded-full border border-gray-300 bg-gray-50 shadow-sm outline-none data-[state=checked]:bg-green-600"
+                  >
+                    <Switch.Thumb
+                      className="block h-4 w-8 translate-x-0.5 rounded-full bg-gray-600 transition-transform duration-100 will-change-transform data-[state=checked]:translate-x-[28px] data-[state=checked]:bg-white"
+                      {...register('areOpenOnTheWeekend')}
+                    />
+                  </Switch.Root>
+                )}
+              />
+            </div>
 
-            <TextArea
-              name="about"
-              label="Sobre"
-              maxLength={300}
-              defaultValue="Presta assistência a crianças de 06 a 15 anos que se encontre em situação de risco e/ou vulnerabilidade social."
-              className="h-52 resize-none"
-            />
-
-            <Input
-              name="phone"
-              label="Número de Whatsapp"
-              defaultValue="(47) 9 9293 1142"
-            />
-
-            <FileInput.Root>
-              <FileInput.Title className="mb-4 block text-base font-semibold text-gray-600">
-                Fotos
-              </FileInput.Title>
-              <FileInput.FileList>
-                <FileInput.Trigger />
-              </FileInput.FileList>
-              <FileInput.Control />
-            </FileInput.Root>
+            <button
+              disabled={isSubmitting}
+              type="submit"
+              className="mt-10 flex h-16 w-full items-center justify-center rounded-[1.25rem] bg-green-500 text-lg font-bold text-white transition-colors hover:bg-green-700 disabled:bg-gray-400"
+            >
+              {!isSubmitting ? (
+                'Confirmar'
+              ) : (
+                <Loader2 className="h-7 w-7 animate-spin" />
+              )}
+            </button>
           </div>
+        </form>
+      </FormProvider>
 
-          <h6 className="text-3xl font-bold text-title">Visitação</h6>
-
-          <div className="mb-10 mt-6 border-[0.0625rem] border-gray-300" />
-
-          <div className="flex flex-col space-y-6">
-            <TextArea
-              label="Instruções"
-              name="instructions"
-              className="h-32 resize-none"
-              defaultValue="Venha como se sentir a vontade e traga muito amor e paciência para dar."
-            />
-
-            <Input
-              label="Horário das visitas"
-              name="visitingHours"
-              defaultValue="Das 8h até 18h"
-            />
-          </div>
-
-          <div className="mt-8 flex items-center justify-between">
-            <span className="text-base font-semibold text-gray-600">
-              Atende fim de semana?
-            </span>
-
-            <Switch.Root className="relative h-6 w-16 rounded-full border border-gray-300 bg-gray-50 shadow-sm outline-none data-[state=checked]:bg-green-600">
-              <Switch.Thumb className="block h-4 w-8 translate-x-0.5 rounded-full bg-gray-600 transition-transform duration-100 will-change-transform data-[state=checked]:translate-x-[28px] data-[state=checked]:bg-white" />
-            </Switch.Root>
-          </div>
-
-          <button
-            type="submit"
-            className="mt-10 h-16 w-full rounded-[1.25rem] bg-green-500 text-lg font-bold text-white transition-colors hover:bg-green-700"
-          >
-            Confirmar
-          </button>
-        </div>
-      </form>
+      <ButtonDarkMode className="absolute right-5 top-5 z-[1000] bg-zinc-900 hover:bg-zinc-900 lg:right-10 lg:top-10" />
     </div>
   )
 }

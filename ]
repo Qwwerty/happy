@@ -4,7 +4,6 @@ import * as Map from '@/components/Map'
 import { PreviewImage } from '@/components/PreviewImage'
 import { Clock, MessageCircle } from 'lucide-react'
 import { ButtonDarkMode } from '@/components/button-dark-mode'
-import { api } from '@/services/api'
 
 interface OrphanagesDetailProps {
   params: {
@@ -13,8 +12,10 @@ interface OrphanagesDetailProps {
 }
 
 async function getOrphanage(orphanageId: string): Promise<Orphanage | null> {
-  const { data } = await api.get(`/orphanages/${orphanageId}`)
-  const { orphanage } = data
+  const response = await api(`/orphanages/${orphanageId}`, {
+    cache: 'no-cache',
+  })
+  const { orphanage } = await response.json()
 
   return orphanage
 }
@@ -92,7 +93,7 @@ export default async function OrphanageDetail({
                   Horário de visitas
                 </span>
 
-                <span className="truncate text-xl font-semibold text-text-base">
+                <span className="text-xl font-semibold text-text-base">
                   {orphanage.visiting_hours}
                 </span>
               </div>

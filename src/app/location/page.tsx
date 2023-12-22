@@ -1,10 +1,10 @@
 import Image from 'next/image'
-import { api } from '@/data/api'
 
 import * as Map from '@/components/Map'
 import { ButtonDarkMode } from '@/components/button-dark-mode'
 import { Link } from '@/components/link'
 import { Plus } from 'lucide-react'
+import { api } from '@/services/api'
 
 interface IPhoto {
   name: string
@@ -26,11 +26,8 @@ export interface IOrphanage {
 
 async function fetchOrphanages(): Promise<IOrphanage[]> {
   try {
-    const response = await api('/orphanages', {
-      cache: 'no-cache',
-    })
-
-    const { orphanages } = await response.json()
+    const { data } = await api.get('/orphanages')
+    const { orphanages } = data
 
     return orphanages
   } catch (error) {

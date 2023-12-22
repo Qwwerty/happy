@@ -1,5 +1,6 @@
 import { ComponentProps } from 'react'
-import { tv, VariantProps } from 'tailwind-variants'
+import InputMask from 'react-input-mask'
+import { VariantProps, tv } from 'tailwind-variants'
 
 const input = tv({
   base: 'h-16 rounded-[1.25rem] bg-gray-50 px-[1.63rem] py-[1.13rem] text-lg font-semibold text-text-base outline-none',
@@ -18,23 +19,22 @@ const input = tv({
 type InputProps = ComponentProps<'input'> &
   VariantProps<typeof input> & {
     name: string
-    label: string
   }
 
-export function Input({
-  variant,
-  className,
-  name,
-  label = '',
-  ...props
-}: InputProps) {
-  return (
-    <div className="flex flex-col gap-2">
-      <label htmlFor={name} className="text-base font-semibold text-gray-600">
-        {label}
-      </label>
+export function Phone({ name, variant, className, ...props }: InputProps) {
+  function Input(inputProps: any) {
+    return (
+      <input
+        {...inputProps}
+        id={name}
+        className={input({ variant, className })}
+      />
+    )
+  }
 
-      <input {...props} name={name} className={input({ variant, className })} />
-    </div>
+  return (
+    <InputMask mask="(99) 9 9999-9999" maskChar={null} {...props}>
+      {Input}
+    </InputMask>
   )
 }

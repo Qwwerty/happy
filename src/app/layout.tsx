@@ -2,8 +2,10 @@ import type { Metadata } from 'next'
 import { Nunito } from 'next/font/google'
 import { Providers } from './providers'
 
+import 'react-toastify/dist/ReactToastify.css'
 import 'leaflet/dist/leaflet.css'
 import './globals.css'
+import { ToastContainer } from 'react-toastify'
 
 const nunito = Nunito({
   subsets: ['latin'],
@@ -24,7 +26,10 @@ export default function RootLayout({
   return (
     <html className={nunito.className} lang="pt-BR">
       <body className="antialiased scrollbar-thin scrollbar-track-gray-100 scrollbar-thumb-gray-900">
-        <Providers>{children}</Providers>
+        <Providers>
+          {children}
+          <ToastContainer />
+        </Providers>
       </body>
     </html>
   )

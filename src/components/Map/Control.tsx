@@ -12,6 +12,9 @@ interface MapProps {
   orphanages: IOrphanage[]
 }
 
+const INITIAL_LATITUDE = -21.1248353
+const INITIAL_LONGITUDE = -42.9506151
+
 export function Control({ orphanages }: MapProps) {
   const { theme } = useTheme()
 
@@ -22,7 +25,7 @@ export function Control({ orphanages }: MapProps) {
 
   return (
     <MapContainer
-      center={[-21.118306, -42.941503]}
+      center={[INITIAL_LATITUDE, INITIAL_LONGITUDE]}
       zoom={15}
       dragging
       touchZoom

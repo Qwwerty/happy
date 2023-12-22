@@ -1,4 +1,5 @@
 export * from './Root'
 export * from './Control'
 export * from './Preview'
+export * from './Choose'
 export * from './Footer'

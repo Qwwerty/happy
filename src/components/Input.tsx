@@ -1,4 +1,4 @@
-import { ComponentProps, ForwardRefRenderFunction, forwardRef } from 'react'
+import { ComponentProps, forwardRef, ForwardRefRenderFunction } from 'react'
 import { tv, VariantProps } from 'tailwind-variants'
 
 const input = tv({
@@ -15,35 +15,24 @@ const input = tv({
   },
 })
 
-type TextAreaProps = ComponentProps<'textarea'> &
+type InputProps = ComponentProps<'input'> &
   VariantProps<typeof input> & {
     name: string
     label: string
-    maxLength?: number
   }
 
-const TextAreaBase: ForwardRefRenderFunction<
-  HTMLTextAreaElement,
-  TextAreaProps
-> = (
-  { variant, className, name, label = '', maxLength, ...rest }: TextAreaProps,
+const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
+  { variant, className, name, label = '', ...rest },
   ref,
 ) => {
   return (
     <div className="flex flex-col gap-2">
-      <label htmlFor={name} className="flex gap-8">
-        <span className="text-base font-semibold text-gray-600">{label}</span>
-
-        {maxLength && (
-          <span className="text-sm text-text-base">
-            Máximo de {maxLength} catacteres
-          </span>
-        )}
+      <label htmlFor={name} className="text-base font-semibold text-gray-600">
+        {label}
       </label>
 
-      <textarea
+      <input
         name={name}
-        maxLength={maxLength}
         className={input({ variant, className })}
         ref={ref}
         {...rest}
@@ -52,4 +41,4 @@ const TextAreaBase: ForwardRefRenderFunction<
   )
 }
 
-export const TextArea = forwardRef(TextAreaBase)
+export const Input = forwardRef(InputBase)
