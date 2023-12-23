@@ -106,7 +106,7 @@ export default function Create() {
             <div className="mb-20 mt-10 space-y-6">
               <Form.Field>
                 <Form.Label htmlFor="name">Nome</Form.Label>
-                <Form.Input type="text" name="name" required />
+                <Form.Input type="text" name="name" />
                 <Form.ErrorMessage field="name" />
               </Form.Field>
 
@@ -116,7 +116,6 @@ export default function Create() {
                   name="description"
                   maxLength={300}
                   className="h-52 resize-none"
-                  required
                 />
                 <Form.ErrorMessage field="description" />
               </Form.Field>
@@ -131,7 +130,6 @@ export default function Create() {
                       name="phone"
                       value={field.value}
                       onChange={(e) => field.onChange(e.target.value)}
-                      required
                     />
 
                     <Form.ErrorMessage field="phone" />
@@ -146,7 +144,7 @@ export default function Create() {
                 <FileInput.FileList>
                   <FileInput.Trigger />
                 </FileInput.FileList>
-                <FileInput.Control required />
+                <FileInput.Control />
 
                 <Form.ErrorMessage field="photos" />
               </FileInput.Root>
@@ -165,7 +163,6 @@ export default function Create() {
                 <Form.TextArea
                   name="visitingInstructions"
                   className="h-52 resize-none"
-                  required
                 />
                 <Form.ErrorMessage field="visitingInstructions" />
               </Form.Field>
@@ -175,7 +172,7 @@ export default function Create() {
                   Horário das visitas
                 </Form.Label>
 
-                <Form.Input name="visitingHours" required />
+                <Form.Input name="visitingHours" />
                 <Form.ErrorMessage field="visitingHours" />
               </Form.Field>
             </div>

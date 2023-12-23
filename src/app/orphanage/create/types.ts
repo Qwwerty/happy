@@ -6,7 +6,14 @@ const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png']
 export const createOrphanageFormSchema = z.object({
   name: z.string().min(3, 'Mínimo 3 caracteres.'),
   description: z.string().min(20, 'Mínimo 20 caracteres.'),
-  phone: z.string().min(16, 'Telefone inválido.'),
+  phone: z
+    .string()
+    .min(16, 'Telefone inválido.')
+    .refine((text) => {
+      const phoneWithoutMask = text.replaceAll(/[()\s-_]/g, '').trim()
+
+      return phoneWithoutMask.length === 11
+    }, 'Telefone inválido.'),
   latitude: z.coerce.number().refine((value) => {
     return Math.abs(value) <= 90
   }, 'Localização obrigatória.'),

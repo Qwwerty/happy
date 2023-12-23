@@ -1,5 +1,5 @@
 import { ComponentProps } from 'react'
-import InputMask from 'react-input-mask'
+import InputMask, { Props as InputMaskProps } from 'react-input-mask'
 import { VariantProps, tv } from 'tailwind-variants'
 
 const input = tv({
@@ -16,25 +16,19 @@ const input = tv({
   },
 })
 
-type InputProps = ComponentProps<'input'> &
+type PhoneProps = ComponentProps<'input'> &
   VariantProps<typeof input> & {
     name: string
   }
 
-export function Phone({ name, variant, className, ...props }: InputProps) {
-  function Input(inputProps: any) {
-    return (
-      <input
-        {...inputProps}
-        id={name}
-        className={input({ variant, className })}
-      />
-    )
-  }
-
+export function Phone({ name, variant, className, onChange }: PhoneProps) {
   return (
-    <InputMask mask="(99) 9 9999-9999" maskChar={null} {...props}>
-      {Input}
-    </InputMask>
+    <InputMask
+      id={name}
+      mask="(99) 9 9999-9999"
+      maskChar={null}
+      className={input({ variant, className })}
+      onChange={onChange}
+    />
   )
 }
