@@ -1,9 +1,12 @@
+'use client'
+
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
 
 import * as Map from '@/components/Map'
 import { ButtonDarkMode } from '@/components/button-dark-mode'
 import { Link } from '@/components/link'
-import { Plus } from 'lucide-react'
+import { Loader2, Plus } from 'lucide-react'
 import { api } from '@/services/api'
 
 interface IPhoto {
@@ -24,19 +27,37 @@ export interface IOrphanage {
   photos: IPhoto[]
 }
 
-async function fetchOrphanages(): Promise<IOrphanage[]> {
-  try {
-    const { data } = await api.get('/orphanages')
-    const { orphanages } = data
+export default function Location() {
+  const [orphanages, setOrphanages] = useState<IOrphanage[]>([])
+  const [isLoading, setIsLoading] = useState(false)
 
-    return orphanages
-  } catch (error) {
-    return []
+  async function fetchOrphanages() {
+    setIsLoading(true)
+
+    try {
+      const { data } = await api.get('/orphanages')
+      const { orphanages } = data
+
+      setOrphanages(orphanages)
+    } catch (error) {
+      return []
+    } finally {
+      setIsLoading(false)
+    }
   }
-}
 
-export default async function Location() {
-  const orphanages = await fetchOrphanages()
+  useEffect(() => {
+    fetchOrphanages()
+  }, [])
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen w-full flex-col items-center justify-center gap-4 bg-gradient-to-t from-blue-500 to-cyan-400 dark:from-zinc-900 dark:to-zinc-950">
+        <Loader2 className="h-20 w-20 animate-spin text-white" />
+        <span className="text-lg text-white">Buscando orfanatos...</span>
+      </div>
+    )
+  }
 
   return (
     <div className="relative grid min-h-screen grid-cols-location">
