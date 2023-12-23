@@ -1,6 +1,7 @@
 'use client'
 
 import { Controller, FormProvider, useForm } from 'react-hook-form'
+import { createOrphanageFormSchema, CreateOrphanageFormData } from './types'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as Switch from '@radix-ui/react-switch'
 import * as FileInput from '@/components/FileInput'
@@ -10,7 +11,6 @@ import { Toast } from '@/utils/Toast'
 import { api } from '@/services/api'
 import { Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { createOrphanageFormSchema, CreateOrphanageFormData } from './types.ts'
 import { ButtonDarkMode } from '@/components/button-dark-mode'
 
 export default function Create() {
@@ -26,7 +26,7 @@ export default function Create() {
       visitingHours: '',
       visitingInstructions: '',
       areOpenOnTheWeekend: false,
-      photos: [],
+      photos: [] as any,
     },
     resolver: zodResolver(createOrphanageFormSchema),
   })
@@ -106,7 +106,7 @@ export default function Create() {
             <div className="mb-20 mt-10 space-y-6">
               <Form.Field>
                 <Form.Label htmlFor="name">Nome</Form.Label>
-                <Form.Input type="text" name="name" />
+                <Form.Input type="text" name="name" required />
                 <Form.ErrorMessage field="name" />
               </Form.Field>
 
@@ -116,6 +116,7 @@ export default function Create() {
                   name="description"
                   maxLength={300}
                   className="h-52 resize-none"
+                  required
                 />
                 <Form.ErrorMessage field="description" />
               </Form.Field>
@@ -130,6 +131,7 @@ export default function Create() {
                       name="phone"
                       value={field.value}
                       onChange={(e) => field.onChange(e.target.value)}
+                      required
                     />
 
                     <Form.ErrorMessage field="phone" />
@@ -144,7 +146,7 @@ export default function Create() {
                 <FileInput.FileList>
                   <FileInput.Trigger />
                 </FileInput.FileList>
-                <FileInput.Control />
+                <FileInput.Control required />
 
                 <Form.ErrorMessage field="photos" />
               </FileInput.Root>
@@ -163,6 +165,7 @@ export default function Create() {
                 <Form.TextArea
                   name="visitingInstructions"
                   className="h-52 resize-none"
+                  required
                 />
                 <Form.ErrorMessage field="visitingInstructions" />
               </Form.Field>
@@ -172,7 +175,7 @@ export default function Create() {
                   Horário das visitas
                 </Form.Label>
 
-                <Form.Input name="visitingHours" />
+                <Form.Input name="visitingHours" required />
                 <Form.ErrorMessage field="visitingHours" />
               </Form.Field>
             </div>

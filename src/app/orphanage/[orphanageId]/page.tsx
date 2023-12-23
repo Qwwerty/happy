@@ -1,10 +1,15 @@
+'use client'
+
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import type { Orphanage } from '@/types/orphanage'
 import * as Map from '@/components/Map'
 import { PreviewImage } from '@/components/PreviewImage'
-import { Clock, MessageCircle } from 'lucide-react'
+import { Clock, Loader2, MessageCircle } from 'lucide-react'
 import { ButtonDarkMode } from '@/components/button-dark-mode'
 import { api } from '@/services/api'
+import { Toast } from '@/utils/Toast'
+import { useRouter } from 'next/navigation'
 
 interface OrphanagesDetailProps {
   params: {
@@ -12,26 +17,45 @@ interface OrphanagesDetailProps {
   }
 }
 
-async function getOrphanage(orphanageId: string): Promise<Orphanage | null> {
-  const { data } = await api.get(`/orphanages/${orphanageId}`)
-  const { orphanage } = data
+export default function OrphanageDetail({ params }: OrphanagesDetailProps) {
+  const [orphanage, setOrphanage] = useState<Orphanage | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter()
 
-  return orphanage
-}
+  async function getOrphanage(orphanageId: string) {
+    setIsLoading(true)
 
-export default async function OrphanageDetail({
-  params,
-}: OrphanagesDetailProps) {
-  const orphanage = await getOrphanage(params.orphanageId)
+    try {
+      const { data } = await api.get(`/orphanages/${orphanageId}`)
+      const { orphanage } = data
 
-  if (!orphanage) {
-    return null
+      setOrphanage(orphanage)
+    } catch (error) {
+      Toast.error('Orfanato não encontrado')
+
+      router.push('/location')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
-  const urlNavigateToGoogleMap = `https://www.google.com/maps/search/?api=1&query=${orphanage.latitude},${orphanage.longitude}`
-  const urSendMessageToWhatsapp = `https://wa.me/55${orphanage.phone}/?text=urlencodedtext`
+  useEffect(() => {
+    getOrphanage(params.orphanageId)
+  }, [params.orphanageId])
 
-  const areOpenOnTheWeekendText = orphanage.are_open_on_the_weekend
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen w-full flex-col items-center justify-center gap-4 bg-gradient-to-t from-blue-500 to-cyan-400 dark:from-zinc-900 dark:to-zinc-950">
+        <Loader2 className="h-20 w-20 animate-spin text-white" />
+        <span className="text-lg text-white">Buscando orfanato...</span>
+      </div>
+    )
+  }
+
+  const urlNavigateToGoogleMap = `https://www.google.com/maps/search/?api=1&query=${orphanage?.latitude},${orphanage?.longitude}`
+  const urSendMessageToWhatsapp = `https://wa.me/55${orphanage?.phone}/?text=urlencodedtext`
+
+  const areOpenOnTheWeekendText = orphanage?.are_open_on_the_weekend
     ? 'Atendemos fim de semana'
     : 'Não atendemos fim de semana'
 
@@ -42,20 +66,20 @@ export default async function OrphanageDetail({
       </span>
 
       <div className="mt-10 w-[708px] overflow-hidden rounded-[20px] border border-gray-300 bg-white pb-20">
-        <PreviewImage orphanageImage={orphanage} />
+        {orphanage && <PreviewImage orphanageImage={orphanage!} />}
 
         <div className="mt-16 px-20">
           <h2 className="break-all text-5xl font-bold text-title">
-            {orphanage.name}
+            {orphanage?.name}
           </h2>
           <span className="mt-8 block break-all text-lg font-semibold text-text-base">
-            {orphanage.description}
+            {orphanage?.description}
           </span>
 
           <Map.Root className="mx-auto mt-16 w-full max-w-[34rem] overflow-hidden rounded-[1.25rem]">
             <Map.Preview
-              latitude={orphanage.latitude}
-              longitude={orphanage.longitude}
+              latitude={orphanage?.latitude ?? 0}
+              longitude={orphanage?.longitude ?? 0}
             />
 
             <Map.Footer className="w-full">
@@ -79,7 +103,7 @@ export default async function OrphanageDetail({
             </h2>
 
             <span className="break-all text-xl font-semibold text-text-base">
-              {orphanage.visiting_instructions}
+              {orphanage?.visiting_instructions}
             </span>
           </div>
 
@@ -93,13 +117,13 @@ export default async function OrphanageDetail({
                 </span>
 
                 <span className="truncate text-xl font-semibold text-text-base">
-                  {orphanage.visiting_hours}
+                  {orphanage?.visiting_hours}
                 </span>
               </div>
             </div>
 
             <div
-              data-are-open-on-weekends={orphanage.are_open_on_the_weekend}
+              data-are-open-on-weekends={orphanage?.are_open_on_the_weekend}
               className="group flex h-44 flex-col gap-4 rounded-[1.25rem] border border-green-100 bg-green-50 py-8 pl-6 pr-20 data-[are-open-on-weekends=false]:border-pink-900 data-[are-open-on-weekends=false]:bg-pink-50"
             >
               <Clock className="h-10 w-10 text-green-600 group-data-[are-open-on-weekends=false]:text-pink-900" />

@@ -3,7 +3,11 @@
 import { useFileInput } from './Root'
 import { useFormContext } from 'react-hook-form'
 
-export function Control() {
+interface ControlProps {
+  required?: boolean
+}
+
+export function Control({ required = false }: ControlProps) {
   const { register } = useFormContext()
   const { id } = useFileInput()
 
@@ -15,6 +19,7 @@ export function Control() {
       multiple
       className="sr-only"
       {...register('photos')}
+      required={required}
     />
   )
 }
