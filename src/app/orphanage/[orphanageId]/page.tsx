@@ -10,6 +10,12 @@ import { ButtonDarkMode } from '@/components/button-dark-mode'
 import { api } from '@/services/api'
 import { Toast } from '@/utils/Toast'
 import { useRouter } from 'next/navigation'
+import dynamic from 'next/dynamic'
+
+const MapPreview = dynamic(
+  () => import('@/components/Map/Preview').then((module) => module.Preview),
+  { ssr: false },
+)
 
 interface OrphanagesDetailProps {
   params: {
@@ -77,7 +83,7 @@ export default function OrphanageDetail({ params }: OrphanagesDetailProps) {
           </span>
 
           <Map.Root className="mx-auto mt-16 w-full max-w-[34rem] overflow-hidden rounded-[1.25rem]">
-            <Map.Preview
+            <MapPreview
               latitude={orphanage?.latitude ?? 0}
               longitude={orphanage?.longitude ?? 0}
             />

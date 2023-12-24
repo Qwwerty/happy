@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { isArrayLikeObject } from 'lodash'
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024
 const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png']
@@ -24,9 +25,12 @@ export const createOrphanageFormSchema = z.object({
   areOpenOnTheWeekend: z.boolean(),
   visitingHours: z.string().min(1, 'Campo obrigatório.'),
   photos: z
-    .instanceof(FileList, { message: 'Mínmo uma imagem.' })
-    .refine((files) => files.length >= 1, 'Mínimo uma imagem.')
-    .refine((files) => {
+    .unknown()
+    .refine(
+      (files) => isArrayLikeObject(files) && files.length >= 1,
+      'Mínimo uma imagem.',
+    )
+    .refine((files: any) => {
       let hasAllowedImage = true
 
       for (let i = 0; i < files.length; i++) {

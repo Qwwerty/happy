@@ -12,6 +12,12 @@ import { api } from '@/services/api'
 import { Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { ButtonDarkMode } from '@/components/button-dark-mode'
+import dynamic from 'next/dynamic'
+
+const MapChoose = dynamic(
+  () => import('@/components/Map/Choose').then((module) => module.Choose),
+  { ssr: false },
+)
 
 export default function Create() {
   const router = useRouter()
@@ -94,7 +100,7 @@ export default function Create() {
             <div className="mb-10 mt-6 border-[0.0625rem] border-gray-300" />
 
             <Map.Root className="overflow-hidden rounded-[1.25rem]">
-              <Map.Choose />
+              <MapChoose />
               <Map.Footer className="flex h-12 w-full items-center justify-center  bg-blue-400">
                 <span className=" text-lg font-bold text-white">
                   Clique no mapa para adicionar a localização

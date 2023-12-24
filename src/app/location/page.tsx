@@ -1,13 +1,18 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import dynamic from 'next/dynamic'
 import Image from 'next/image'
-
 import * as Map from '@/components/Map'
 import { ButtonDarkMode } from '@/components/button-dark-mode'
 import { Link } from '@/components/link'
-import { Loader2, Plus } from 'lucide-react'
 import { api } from '@/services/api'
+import { Loader2, Plus } from 'lucide-react'
+
+const MapControl = dynamic(
+  () => import('@/components/Map/Control').then((module) => module.Control),
+  { ssr: false },
+)
 
 interface IPhoto {
   name: string
@@ -36,6 +41,7 @@ export default function Location() {
 
     try {
       const { data } = await api.get('/orphanages')
+
       const { orphanages } = data
 
       setOrphanages(orphanages)
@@ -54,6 +60,7 @@ export default function Location() {
     return (
       <div className="flex min-h-screen w-full flex-col items-center justify-center gap-4 bg-gradient-to-t from-blue-500 to-cyan-400 dark:from-zinc-900 dark:to-zinc-950">
         <Loader2 className="h-20 w-20 animate-spin text-white" />
+
         <span className="text-lg text-white">Buscando orfanatos...</span>
       </div>
     )
@@ -80,7 +87,7 @@ export default function Location() {
       </div>
 
       <Map.Root>
-        <Map.Control orphanages={orphanages} />
+        <MapControl orphanages={orphanages} />
       </Map.Root>
 
       <Link
