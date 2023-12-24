@@ -1,36 +1,92 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<h1 align="center">
 
-## Getting Started
+Happy :rocket:
 
-First, run the development server:
+</h1>
+
+<p align="center">
+  Happy - Find orphanages
+  <br>
+  <br>
+
+  <a href="www.linkedin.com/in/rhalfoliveira">
+    <img alt="Made by Rhalf Oliveira" src="https://img.shields.io/badge/made%20by-Rhalf%20Oliveira-%237519C1">
+  </a>
+  <a href="https://github.com/qwwerty/happy/commits/master">
+    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/qwwerty/happy">
+  </a>
+
+</p>
+
+<p align="center">
+  <a href="#dart-sobre">About</a> &#xa0; | &#xa0; 
+  <a href="#rocket-tecnologias">Technologies</a> &#xa0; | &#xa0;
+  <a href="#white_check_mark-requerimentos">Requirements</a> &#xa0; | &#xa0;
+  <a href="#checkered_flag-começando">Starting</a> &#xa0; &#xa0; | &#xa0;
+  <a href="#framed_picture-imagens">Images</a> &#xa0; &#xa0;
+</p>
+
+<br>
+
+## :dart: About
+
+Happy is an application that connects people to institutional care homes to make many children's days happier.
+
+## :rocket: Technologies
+
+The following technologies were used in the project:
+
+- [Vite](https://vitejs.dev/)
+- [NextJs 14](https://nextjs.org/)
+- [Typescript](https://www.typescriptlang.org/)
+- [Axios](https://axios-http.com/)
+- [Radix-ui](https://www.radix-ui.com/)
+- [Lucide](https://lucide.dev/)
+- [React-hook-form](https://react-hook-form.com/)
+- [React-toastify](https://fkhadra.github.io/react-toastify/introduction)
+- [Zod](https://zod.dev/)
+- [Next-themes](https://github.com/pacocoursey/next-themes)
+- [Framer-motion](https://www.framer.com/motion/)
+- [Leaflet](https://leafletjs.com/)
+- [Tailwind](https://tailwindcss.com/)
+- [Lodash](https://lodash.com/)
+
+## :white_check_mark: Requirements
+
+- [Node](https://nodejs.org/en/)
+- [Npm](https://www.npmjs.com/)
+- [Yarn](https://yarnpkg.com/lang/en/)
+
+## :checkered_flag: Starting
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Clone this project
+$ git clone https://github.com/qwwerty/happy
+
+# Access
+$ cd happy
+
+# Install dependencies
+$ npm install
+
+# Rename the .env.example file to .env.local and configure environment variables
+
+# Run the project
+$ npm run dev
+
+# The server will initialize in the <http://localhost:3000>
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## :point_right: Figma
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- [Figma](<https://www.figma.com/file/IvfKjdAkhV4jOKmnaOjW3D/Happy-Web-(Copy)?type=design&node-id=0%3A1&mode=dev>)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## :framed_picture: Images
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+<h1 align="center">
+    <img alt="Cover" src = "./.github/images/image-01.png" />
+    <img alt="Cover" src = "./.github/images/image-02.png" />
+    <img alt="Cover" src = "./.github/images/image-03.png" />
+    <img alt="Cover" src = "./.github/images/image-04.png" />
+    <img alt="Cover" src = "./.github/images/image-05.png" />
+</h1>

@@ -29,7 +29,6 @@
     "tailwind-merge": "^2.0.0",
     "tailwind-scrollbar": "^3.0.5",
     "tailwind-variants": "^0.1.19",
-    "validator": "^13.11.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {
